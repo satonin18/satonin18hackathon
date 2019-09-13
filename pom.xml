@@ -7,6 +7,232 @@
     <groupId>com.lanit.dcs.diss.aacs.satonin18</groupId>
     <artifactId>hackathon</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <name>${project.artifactId}</name>
+    <organization>
+        <name>Lanit</name>
+        <url>http://www.lanit.ru</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>satonin18</id>
+            <name>satonin</name>
+            <!--<email>satonin@mail.net</email>-->
+            <url>http://www.lanit.ru</url>
+            <organization>${project.organization.name}</organization>
+            <organizationUrl>${project.organization.url}</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.version>8</java.version>
+
+        <servletapi.version>3.1.0</servletapi.version>
+        <spring.version>5.1.4.RELEASE</spring.version>
+        <jstl.version>1.2</jstl.version>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${servletapi.version}</version>
+            <!--<scope>provided</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <!--<version>2.0.0.Final</version>-->
+            <version>1.1.0.Final</version>
+        </dependency>
 
 
+
+        <!--for GlassFish-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.10.0.pr1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope><!--TODO check-->
+        </dependency>
+    </dependencies>
+    <!--////////////////////////////////////////////////////////////////////////////////-->
+    <profiles>
+        <profile>
+            <id>war-exploded</id>
+            <!--TODO beta-version-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!--WAR exploded-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <!--(configs without .xml, BUT store 1 glassFish.xml)-->
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <!-- <webXml>src\main\webapp\WEB-INF\web.xml</webXml> -->
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>default-war</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>war-exploded</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exploded</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>war</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <version>2.4</version>
+                        <configuration>
+                            <!--(configs without .xml, BUT store 1 glassFish.xml)-->
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <!-- <webXml>src\main\webapp\WEB-INF\web.xml</webXml> -->
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>server-tomcat(noImpl)</id>
+            <build>
+                <plugins>
+                    <!--work only: mvn run-war-->
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.2</version>
+                        <configuration>
+                            <!--<url>http://127.0.0.1:8080/${build.finalName}/</url>-->
+                            <url>http://localhost:8080/${build.finalName}/</url>
+                            <server>tomcatServer</server>
+                            <path>/${build.finalName}</path><!--DONT WORK ALIAS ${project.build.finalName}-->
+                            <!--<username>admin</username>-->
+                            <!--<password>password</password>-->
+
+                            <update>true</update>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>deploy</phase>
+                                <id>runTomcat</id>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>server-glassfish(noImpl)</id>
+            <properties>
+                <glassfish.home>C:\\glassfish4\\glassfish</glassfish.home>
+                <glassfish.user>admin</glassfish.user>
+                <glassfish.domain>domain1</glassfish.domain>
+                <glassfish.passfile>
+                    ${glassfish.home}\\domains\\${glassfish.domain}\\config\\domain-passwords
+                </glassfish.passfile>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.glassfish.maven.plugin</groupId>
+                        <artifactId>maven-glassfish-plugin</artifactId>
+                        <version>2.1</version>
+                        <configuration>
+                            <glassfishDirectory>${glassfish.home}</glassfishDirectory>
+                            <user>admin</user>
+                            <passwordFile>${glassfish.passfile}</passwordFile>
+                            <!--<adminPassword>${glassfish.adminPassword}</adminPassword>-->
+                            <domain>
+                                <name>domain1</name>
+                                <httpPort>8080</httpPort>
+                                <adminPort>4848</adminPort>
+                            </domain>
+                            <components>
+                                <component>
+                                    <name>${project.artifactId}</name>
+                                    <artifact>target/${project.build.finalName}.war</artifact>
+                                </component>
+                            </components>
+                            <debug>true</debug>
+                            <terse>false</terse>
+                            <echo>true</echo>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!--compile java files-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <!--<encoding>${project.build.sourceEncoding}</encoding>-->
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 </project>
