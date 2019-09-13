@@ -26,11 +26,16 @@ horsepower > 0
 данный Person старше 18 лет
 */
 
-//todo ограничения БД (по идее они уже прописаны в DTO на более высоком уровне приложения)
-public class Car {
+//todo ограничения БД
+public class CarDto {
     Long id;
-    String vendor; //vendor никогда не содержит “-” и не пустой
-    String model; //model не пустой),
+    //todo (not null, в формате vendor-model например BMW-X5,
+    // причем vendor никогда не содержит “-” и не пустой,
+    // model не пустой),
+
+    //"vendor-model" = "BMW-X5",
+    //patern = "?-?" где "?"=как минимум один символ
+    String model; //=bad name var
     Integer horsepower;
     Long ownerId;
 }

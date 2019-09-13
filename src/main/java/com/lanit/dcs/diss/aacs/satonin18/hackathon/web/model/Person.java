@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,8 +24,13 @@ birthdate: Date (not null,формат dd.MM.yyyy),
 Ранее валидный объект с таким id не передавался
 */
 
+//todo ограничения БД (по идее они уже прописаны в DTO на более высоком уровне приложения)
+//todo JSON PersonWithCars(only 4 var)
 public class Person {
-    long id;
+    Long id;
     String name;
     Date birthdate;//todo dd.MM.yyyy
+
+    List<Car> cars; //Array of Cars [{}, {}, ...] (not null)
+
 }

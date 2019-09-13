@@ -2,10 +2,8 @@ package com.lanit.dcs.diss.aacs.satonin18.hackathon.web.controller.rest_service;
 
 import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.model.Car;
 import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.model.Person;
-import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.model.PersonWithCars;
-import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.model.Statistics;
+import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.dto.StatisticsDto;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 //TODO ALL METHODS DECORATE TRY-CATH
+// todo if primiitve input type = 500. Need Obj with validator and submint only 400 or 200
 
 @RestController //todo check binding with other anotations (=analog /*@ResponseBody*/, but not @RequestBody)
 @Controller("restServiceController")
@@ -43,10 +42,9 @@ public class RestServiceController {
         return ""; // todo пусто ??? //status 200
 	}
 
-	// todo in TZ no ~40* no true param. need Obj with validator and submint only 400
 	@RequestMapping(value = "/personwithcars", method = RequestMethod.GET)
-	public PersonWithCars get_personwithcars(
-	        long personid //todo Long (not null)
+	public Person get_personwithcars(
+            Long personid //todo Long (not null)
             //can be @Valid Long personid,
             // BindingResult bindingResult
     ) {
@@ -59,8 +57,8 @@ public class RestServiceController {
 	}
 
 	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
-	public Statistics statistics() {
-	    //todo Statistics statistics = new Statistic = ...
+	public StatisticsDto statistics() {
+	    //todo StatisticsDto statistics = new Statistic = ...
 		return null; // todo statistics //status 200
 	}
 
