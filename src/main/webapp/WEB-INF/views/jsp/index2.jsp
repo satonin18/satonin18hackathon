@@ -18,7 +18,7 @@
 </head>
 </body>
 
-<h3>Hello //)</h3>
+<h3>Hello *********</h3>
 <%--<div id="content">--%>
     <%--<h1>Welcome</h1>--%>
     <%--<app-root>Загрузка...</app-root>--%>

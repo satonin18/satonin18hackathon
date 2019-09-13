@@ -1,13 +1,10 @@
-package com.lanit.dcs.diss.aacs.satonin18.hackathon.web.model;
+package com.lanit.dcs.diss.aacs.satonin18.hackathon.web.dto.valid;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.List;
-
-@Data
-@NoArgsConstructor
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 //todo validation
 /*
@@ -24,13 +21,22 @@ birthdate: Date (not null,формат dd.MM.yyyy),
 Ранее валидный объект с таким id не передавался
 */
 
-//todo ограничения БД (по идее они уже прописаны в DTO на более высоком уровне приложения)
-//todo JSON PersonWithCars(only 4 var)
-public class Person {
+//todo ограничения БД
+// TODO SET VALIDATOR
+
+@Data
+@NoArgsConstructor
+public class PersonDto4save {
+
+    @NotNull
     Long id;
+
+    @NotNull
     String name;
-    Date birthdate;//todo dd.MM.yyyy
 
-    List<Car> cars; //Array of Cars [{}, {}, ...] (not null)
+//    Date birthdate;
 
+    @NotNull
+//    @Pattern(regexp = )
+    String birthdate;//todo + PropertiesApp.DATA_FORMAT_BIRTHDATE
 }

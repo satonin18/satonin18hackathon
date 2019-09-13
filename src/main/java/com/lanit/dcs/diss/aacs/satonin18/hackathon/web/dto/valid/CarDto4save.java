@@ -1,20 +1,19 @@
-package com.lanit.dcs.diss.aacs.satonin18.hackathon.web.model;
+package com.lanit.dcs.diss.aacs.satonin18.hackathon.web.dto.valid;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
-
-@Data
-@NoArgsConstructor
 
 //todo validation
 /*
 JSON, представляющий объект Car
 {
 id: Long (not null),
-model: String (not null, в формате vendor-model например BMW-X5,
-    причем vendor никогда не содержит “-” и не пустой, model не пустой),
+entity: String (not null, в формате vendor-entity например BMW-X5,
+    причем vendor никогда не содержит “-” и не пустой, entity не пустой),
 horsepower: Integer (not null),
 ownerId: Long (not null)
 }
@@ -27,15 +26,27 @@ horsepower > 0
 */
 
 //todo ограничения БД
-public class CarDto {
-    Long id;
-    //todo (not null, в формате vendor-model например BMW-X5,
-    // причем vendor никогда не содержит “-” и не пустой,
-    // model не пустой),
+// TODO SET VALIDATOR
 
-    //"vendor-model" = "BMW-X5",
+@Data
+@NoArgsConstructor
+public class CarDto4save {
+
+    @NotNull
+    Long id;
+    //todo (not null, в формате vendor-entity например BMW-X5,
+    // причем vendor никогда не содержит “-” и не пустой,
+    // entity не пустой),
+
+    //"vendor-entity" = "BMW-X5",
     //patern = "?-?" где "?"=как минимум один символ
+    @NotNull
+    @Pattern(regexp = "^.+-.+$") //^=start $=end .=любой_символ +=один_или_более_ раз
     String model; //=bad name var
+
+    @NotNull
     Integer horsepower;
+
+    @NotNull //todo положительное
     Long ownerId;
 }
