@@ -5,8 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.helper.PropertiesApp;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.PastOrPresent;
 import java.util.List;
 
 //todo validation
@@ -36,6 +40,7 @@ birthdate: Date (not null,формат dd.MM.yyyy),
 //@JsonIgnoreProperties({"cars"}) //todo replace java.sql.Date birthdate on STRING
 public class Person {
 
+    @NotNull
 
     @Id
     @Column(name = "id", nullable = false)
@@ -43,17 +48,20 @@ public class Person {
     Long id;
 
 
+    @NotNull
+//    @NotBlank
 
     @Column(name = "name", nullable = false, length = 100)
     String name;
 
 
-
     @JsonFormat(pattern = PropertiesApp.DATA_FORMAT_BIRTHDATE, shape = JsonFormat.Shape.STRING)
+
+    @NotNull
+    @Past
 
     @Column(name = "birthdate", nullable = false)
     java.sql.Date birthdate;//todo dd.MM.yyyy
-
 
 
     @org.hibernate.annotations.LazyCollection(

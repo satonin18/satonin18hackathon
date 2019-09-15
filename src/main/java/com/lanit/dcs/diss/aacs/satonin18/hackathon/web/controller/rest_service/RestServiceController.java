@@ -10,6 +10,7 @@ import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.service.PersonService;
 import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.helper.PropertiesApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 //@SuppressWarnings("ALL")
 @RestController //todo check binding with other anotations (=analog /*@ResponseBody*/, but not @RequestBody)
@@ -28,16 +31,14 @@ public class RestServiceController {
 	@Autowired
 	private CarService carService;
 
-	//todo can be has 3 controllers: Car, Person, Util=Static remove)
-
 	@RequestMapping(value = "/person", method = RequestMethod.POST)
-	public void save_person(
-			HttpServletResponse response,
+	public ResponseEntity save_person(
 			@Valid @RequestBody PersonDto4save dto,
 			BindingResult bindingResult
 	) {
 		try {
 			if (bindingResult.hasErrors()) throw new Exception();
+			if (personService.findById(dto.getId()) == null) throw new Exception();
 
 			Person person = new Person();
 			person.setId(dto.getId());
@@ -51,66 +52,63 @@ public class RestServiceController {
 			person.setBirthdate(sqlData);
 
 			personService.save(person);
-			response.setStatus(HttpStatus.OK.value());
+
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e){
-			response.setStatus(HttpStatus.BAD_REQUEST.value());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "/car", method = RequestMethod.POST)
-	public void save_car(
-			HttpServletResponse response,
+	public ResponseEntity save_car(
 			@Valid @RequestBody CarDto4save dto,
 			BindingResult bindingResult
 	) {
 		try {
 			if (bindingResult.hasErrors()) throw new Exception();
+			if (carService.findById(dto.getId()) == null) throw new Exception();
+			Person ownerPerson = personService.findById(dto.getOwnerId()).orElseThrow( () -> new Exception() );
+
+			LocalDate birthday = ownerPerson.getBirthdate().toLocalDate();
+			long age = LocalDate.from(birthday).until(LocalDate.now(), ChronoUnit.YEARS);
+			if(age < 18) throw new Exception();
 
 			Car car = new Car();
 			car.setId(dto.getId());
 			car.setHorsepower(dto.getHorsepower());
-			String[] mas = dto.getModel().split("-");
+			String[] mas = dto.getModel().split("-",2);
 			car.setVendor(mas[0]);
 			car.setModel(mas[1]);
 
-			Person ownerPerson = personService.findById(dto.getOwnerId()).orElseThrow( () -> new Exception() );
 //			car.setPerson(ownerPerson);
 			car.setOwnerId(ownerPerson.getId());
 
 			carService.save(car);
-			response.setStatus(HttpStatus.OK.value());
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e){
-			response.setStatus(HttpStatus.BAD_REQUEST.value());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
 	@RequestMapping(value = "/personwithcars", method = RequestMethod.GET)
-	public Person get_personwithcars(
-			HttpServletResponse response,
-			Long personid //todo Long (not null)
-//			can be @Valid Long personid,
-//			 BindingResult bindingResult
+	public ResponseEntity<Person> get_personwithcars(
+			Long personId //todo Long (not null)
 	) {
 		try {
-//	        if (bindingResult.hasErrors()) {
-//	            return "";// todo пусто ??? //status 400 Bad Request - ошибки валидации
-//	        }
-			Person person = personService.findById(personid).orElseThrow(() -> new Exception());
-//			Person person = personService.findById(personid).get();
-//			if(person == null) throw new Exception(); //status 400 Bad Request - ошибки валидации
+	        if (personId == null) throw new Exception();
+			Person person = personService.findById(personId).orElseThrow(() -> new Exception());
 
-			response.setStatus(HttpStatus.OK.value());
-			return person;
+			return new ResponseEntity<Person>(
+					person,
+					HttpStatus.OK
+			);
 		} catch (Exception e){
-			response.setStatus(HttpStatus.BAD_REQUEST.value());
-			return null;
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
-//	for test
-//	@ResponseStatus(HttpStatus.OK)//always MUST return = status 200
 	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
-	public StatisticsDto statistics(HttpServletResponse response) {
+	public ResponseEntity<StatisticsDto> statistics() {
 		try {
 			Long personcount = personService.count();
 			Long carcount = carService.count();
@@ -124,35 +122,23 @@ public class RestServiceController {
 			statisticsDto.setCarcount(carcount);
 			statisticsDto.setUniquevendorcount(uniquevendorcount);
 
-			//for test
-			response.setStatus(HttpStatus.OK.value());
-
-			return statisticsDto;
+			return new ResponseEntity<StatisticsDto>(
+					statisticsDto,
+					HttpStatus.OK
+			);
 		} catch (Exception e) {
-			//for test
-			response.setStatus(HttpStatus.BAD_REQUEST.value());
-
-			return null; // "Exception (BUT always MUST return = status 200)"
+			return new ResponseEntity(HttpStatus.OK);
 		}
 	}
 
-	//todo no rest becouse editable GET-reguest
-//	for test
-//	@ResponseStatus(HttpStatus.OK)
+	//todo no rest, GET-reguest = edit state
 	@RequestMapping(value = "/clear", method = RequestMethod.GET)
-	public void clear(HttpServletResponse response) {
+	public ResponseEntity clear() {
 		try {
 			carService.deleteAll();
 			personService.deleteAll();
-
-			//for test
-			response.setStatus(HttpStatus.OK.value());
-		}
-		catch (Exception ignor) {
-			/*NOP*/
-
-			//for test
-			response.setStatus(HttpStatus.BAD_REQUEST.value());
+		} finally {
+			return new ResponseEntity(HttpStatus.OK);
 		}
 	}
 

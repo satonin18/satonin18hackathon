@@ -1,10 +1,11 @@
 package com.lanit.dcs.diss.aacs.satonin18.hackathon.web.dto.valid;
 
+import com.lanit.dcs.diss.aacs.satonin18.hackathon.web.helper.PropertiesApp;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 
 //todo validation
 /*
@@ -32,11 +33,17 @@ public class PersonDto4save {
     Long id;
 
     @NotNull
+//    @NotBlank
+    @Size(min = 1, max = 100)
     String name;
 
-//    Date birthdate;
+//    @NotNull
+
+//    @DateTimeFormat(PropertiesApp.DATA_FORMAT_BIRTHDATE)
+//    java.sql.Date birthdate;
 
     @NotNull
+    @NotBlank
 //    @Pattern(regexp = )
     String birthdate;//todo + PropertiesApp.DATA_FORMAT_BIRTHDATE
 }
