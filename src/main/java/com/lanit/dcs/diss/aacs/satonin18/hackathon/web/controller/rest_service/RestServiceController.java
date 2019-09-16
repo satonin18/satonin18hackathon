@@ -98,13 +98,13 @@ public class RestServiceController {
 
 	@RequestMapping(value = "/personwithcars", method = RequestMethod.GET)
 	public ResponseEntity<Person> get_personwithcars(
-			Long personId //todo Long (not null)
+			Long personid //todo Long (not null)
 	) {
 		try {
-	        if (personId == null) throw new Exception();
+	        if (personid == null) throw new Exception();
 
-			if ( ! personService.existsById(personId) ) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			Person person = personService.findById(personId).get();
+			if ( ! personService.existsById(personid) ) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			Person person = personService.findById(personid).get();
 			if(person == null)
 				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			else

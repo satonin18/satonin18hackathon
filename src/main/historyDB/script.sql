@@ -18,11 +18,11 @@ USE `hackathon` ;
 -- Table `hackathon`.`cars`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hackathon`.`cars` (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `vendor` VARCHAR(50) NOT NULL,
   `model` VARCHAR(50) NOT NULL,
   `horsepower` INT UNSIGNED NOT NULL,
-  `ownerId` BIGINT UNSIGNED NOT NULL,
+  `ownerId` BIGINT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -35,7 +35,7 @@ CREATE INDEX `ownerId_ind` ON `hackathon`.`cars` (`ownerId` ASC) VISIBLE;
 -- Table `hackathon`.`persons`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hackathon`.`persons` (
-  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `birthdate` DATE NOT NULL,
   PRIMARY KEY (`id`))

@@ -55,7 +55,7 @@ public class Person {
 //    @Past
 
     @Column(name = "birthdate", nullable = false)
-    java.sql.Date birthdate;
+    java.sql.Date birthdate; //LocalDate
 
 
     @org.hibernate.annotations.LazyCollection(
