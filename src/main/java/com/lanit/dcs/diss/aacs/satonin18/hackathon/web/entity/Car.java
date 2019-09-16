@@ -38,10 +38,13 @@ horsepower > 0
 //@JsonIgnoreProperties({"person", "vendor", "model"}) //todo in "model" = vendor-model
 public class Car {
 
+
+
     @Id
     @Column(name = "id", nullable = false)
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
 
 
     @JsonIgnore
@@ -50,16 +53,19 @@ public class Car {
     String vendor;
 
 
+
     @JsonIgnore
 
     @Column(name = "model", nullable = false, length = 50)
     String model;
 
 
+
     @JsonProperty("model")
     String model(){
         return String.join("-",vendor, model);
     }
+
 
 
 //    @Positive
@@ -69,8 +75,10 @@ public class Car {
     Integer horsepower;
 
 
+
     @Column(name = "ownerId", nullable = false)
     Long ownerId;
+
 
 
 //    @JsonIgnore
@@ -78,4 +86,5 @@ public class Car {
 //    @ManyToOne
 //    @JoinColumn(name = "ownerId", referencedColumnName = "id", nullable = false)
 //    private Person person;
+
 }

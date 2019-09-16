@@ -22,7 +22,7 @@ birthdate: Date (not null,формат dd.MM.yyyy),
 Ранее валидный объект с таким id не передавался
 */
 
-//todo ограничения БД
+// todo ограничения БД
 // TODO SET VALIDATOR
 
 @Data

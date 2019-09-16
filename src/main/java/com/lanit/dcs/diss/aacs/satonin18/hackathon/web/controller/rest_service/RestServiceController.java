@@ -44,14 +44,15 @@ public class RestServiceController {
 			SimpleDateFormat format = new SimpleDateFormat(PropertiesApp.DATA_FORMAT_BIRTHDATE);
 			java.util.Date utilData = format.parse(dto.getBirthdate()); // throw new Exception();
 			java.sql.Date sqlDataBirthdate = new java.sql.Date(utilData.getTime());
-			LocalDate birthday = sqlDataBirthdate.toLocalDate();
-			long days = LocalDate.from(birthday).until(LocalDate.now(), ChronoUnit.DAYS);
+			LocalDate localdataBirthday = sqlDataBirthdate.toLocalDate();
+			long days = LocalDate.from(localdataBirthday).until(LocalDate.now(), ChronoUnit.DAYS);
 			if(days < 0) throw new Exception();
 			//------------------------------------
 			Person person = new Person();
 			person.setId(dto.getId());
 			person.setName(dto.getName());
-			person.setBirthdate(sqlDataBirthdate);
+//			person.setBirthdate(sqlDataBirthdate);
+			person.setBirthdate(localdataBirthday);
 
 			personService.save(person);
 
@@ -72,8 +73,9 @@ public class RestServiceController {
 			if ( carService.existsById(dto.getId()) ) throw new Exception();
 			if(dto.getHorsepower() <= 0) throw new Exception();
 			Person ownerPerson = personService.findById(dto.getOwnerId()).orElseThrow( () -> new Exception() );
-			LocalDate birthday = ownerPerson.getBirthdate().toLocalDate();
-			long age = LocalDate.from(birthday).until(LocalDate.now(), ChronoUnit.YEARS);
+			LocalDate birthday = ownerPerson.getBirthdate();//.toLocalDate();
+//			long age = LocalDate.from(birthday).until(LocalDate.now(), ChronoUnit.YEARS);
+			long age = birthday.until(LocalDate.now(), ChronoUnit.YEARS);
 			if(age < 18) throw new Exception();
 
 			String[] mas = dto.getModel().split("-",2);
