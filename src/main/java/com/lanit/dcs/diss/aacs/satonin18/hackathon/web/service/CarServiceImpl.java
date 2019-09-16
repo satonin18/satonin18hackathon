@@ -16,6 +16,9 @@ public class CarServiceImpl
     private CarRepository carRepository;
 
     @Override
+    public boolean existsById(Long id) { return carRepository.existsById(id); }
+
+    @Override
     public Optional<Car> findById(Long id) {
         return carRepository.findById(id);
     }
@@ -53,6 +56,7 @@ public class CarServiceImpl
 
     @Override
     public Long countDistinctVendor() {
-        return carRepository.countDistinctVendor();
+        //todo replace
+        return Long.valueOf(carRepository.allDistinctVendorIgnorCase().size());
     }
 }

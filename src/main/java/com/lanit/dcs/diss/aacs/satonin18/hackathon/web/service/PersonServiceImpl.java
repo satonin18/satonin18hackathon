@@ -14,6 +14,9 @@ public class PersonServiceImpl
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Override
+    public boolean existsById(Long id) { return personRepository.existsById(id); }
     
     @Override
     public Optional<Person> findById(Long id) { return personRepository.findById(id); }

@@ -2,11 +2,8 @@ package com.lanit.dcs.diss.aacs.satonin18.hackathon.web.dto.valid;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.util.Date;
 
 //todo validation
@@ -40,9 +37,8 @@ public class CarDto4save {
     // причем vendor никогда не содержит “-” и не пустой,
     // entity не пустой),
 
-    //"vendor-model" = "BMW-X5" //vendor никогда не содержит “-” и не пустой, model не пустой
     @NotNull
-//    @NotBlank
+//    @Size(min = 3, max = 101)//on other level valitaion
     @Pattern(regexp = "^[^-]+-.+$") //^=start  $=end  [^-]=любой_символ_кромеТИРЕ  .=любой_символ  +=один_или_более_ раз
     String model; //=bad name var
 

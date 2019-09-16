@@ -43,7 +43,7 @@ public class PersonDto4save {
 //    java.sql.Date birthdate;
 
     @NotNull
-    @NotBlank
+//    @NotBlank
 //    @Pattern(regexp = )
     String birthdate;//todo + PropertiesApp.DATA_FORMAT_BIRTHDATE
 }

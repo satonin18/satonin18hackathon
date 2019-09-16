@@ -37,19 +37,21 @@ public class RestServiceController {
 			BindingResult bindingResult
 	) {
 		try {
+			//------------------------------------
 			if (bindingResult.hasErrors()) throw new Exception();
-			if (personService.findById(dto.getId()) == null) throw new Exception();
-
+			if ( personService.existsById(dto.getId()) ) throw new Exception();
+			//todo replace
+			SimpleDateFormat format = new SimpleDateFormat(PropertiesApp.DATA_FORMAT_BIRTHDATE);
+			java.util.Date utilData = format.parse(dto.getBirthdate()); // throw new Exception();
+			java.sql.Date sqlDataBirthdate = new java.sql.Date(utilData.getTime());
+			LocalDate birthday = sqlDataBirthdate.toLocalDate();
+			long days = LocalDate.from(birthday).until(LocalDate.now(), ChronoUnit.DAYS);
+			if(days < 0) throw new Exception();
+			//------------------------------------
 			Person person = new Person();
 			person.setId(dto.getId());
 			person.setName(dto.getName());
-
-			//todo replace
-			SimpleDateFormat format = new SimpleDateFormat(PropertiesApp.DATA_FORMAT_BIRTHDATE);
-			java.util.Date utilData = format.parse(dto.getBirthdate());
-			java.sql.Date sqlData = new java.sql.Date(utilData.getTime());
-
-			person.setBirthdate(sqlData);
+			person.setBirthdate(sqlDataBirthdate);
 
 			personService.save(person);
 
@@ -65,18 +67,22 @@ public class RestServiceController {
 			BindingResult bindingResult
 	) {
 		try {
+			//------------------------------------
 			if (bindingResult.hasErrors()) throw new Exception();
-			if (carService.findById(dto.getId()) == null) throw new Exception();
+			if ( carService.existsById(dto.getId()) ) throw new Exception();
+			if(dto.getHorsepower() <= 0) throw new Exception();
 			Person ownerPerson = personService.findById(dto.getOwnerId()).orElseThrow( () -> new Exception() );
-
 			LocalDate birthday = ownerPerson.getBirthdate().toLocalDate();
 			long age = LocalDate.from(birthday).until(LocalDate.now(), ChronoUnit.YEARS);
 			if(age < 18) throw new Exception();
 
+			String[] mas = dto.getModel().split("-",2);
+			if(mas[0].length() > 50 || mas[1].length() > 50) throw new Exception();
+			//------------------------------------
+
 			Car car = new Car();
 			car.setId(dto.getId());
 			car.setHorsepower(dto.getHorsepower());
-			String[] mas = dto.getModel().split("-",2);
 			car.setVendor(mas[0]);
 			car.setModel(mas[1]);
 
@@ -96,9 +102,13 @@ public class RestServiceController {
 	) {
 		try {
 	        if (personId == null) throw new Exception();
-			Person person = personService.findById(personId).orElseThrow(() -> new Exception());
 
-			return new ResponseEntity<Person>(
+			if ( ! personService.existsById(personId) ) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			Person person = personService.findById(personId).get();
+			if(person == null)
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			else
+				return new ResponseEntity<Person>(
 					person,
 					HttpStatus.OK
 			);

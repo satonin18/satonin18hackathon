@@ -7,7 +7,9 @@ import java.util.Optional;
 
 public interface CarService
         extends CrudService<Car, Long> {
-    
+    @Override
+    public boolean existsById(Long id);
+
     @Override
     public Optional<Car> findById(Long id);
     @Override

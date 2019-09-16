@@ -5,13 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
+
 
 //todo validation
 /*
@@ -50,17 +46,13 @@ public class Car {
 
     @JsonIgnore
 
-//    @NotBlank
-
-    @Column(name = "vendor", nullable = false, length = 500)
+    @Column(name = "vendor", nullable = false, length = 50)
     String vendor;
 
 
     @JsonIgnore
 
-//    @NotBlank
-
-    @Column(name = "model", nullable = false, length = 500)
+    @Column(name = "model", nullable = false, length = 50)
     String model;
 
 
@@ -70,7 +62,7 @@ public class Car {
     }
 
 
-    @Positive
+//    @Positive
 //    @Range(min=1)
 
     @Column(name = "horsepower", nullable = false)

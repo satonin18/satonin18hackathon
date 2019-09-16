@@ -5,6 +5,7 @@ import java.util.Optional;
 
 //TODO can be extend SpringDataJpa Repository interface
 public interface CrudService<T, ID> {
+    public boolean existsById(ID id);
 
     public Optional<T> findById(ID id) ;
     public List<T> findAll() ;

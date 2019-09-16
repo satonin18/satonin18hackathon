@@ -9,7 +9,9 @@ import java.util.Optional;
 
 public interface PersonService
         extends CrudService<Person, Long> {
-    
+    @Override
+    public boolean existsById(Long id);
+
     @Override
     public Optional<Person> findById(Long id);
     @Override
