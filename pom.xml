@@ -40,6 +40,8 @@
         <hibernate.validator>5.4.2.Final</hibernate.validator>
         <hibernate-validator-annotation-processor>6.0.2.Final</hibernate-validator-annotation-processor>
 
+        <junit-jupiter-engine.version>5.1.0</junit-jupiter-engine.version>
+        <junit-platform-runner.version>1.5.2</junit-platform-runner.version>
     </properties>
 
     <dependencies>
@@ -184,7 +186,7 @@
             <version>8.0.11</version>
         </dependency>
 
-        <!--for GlassFish-->
+        <!--for GlassFish and JSON-Parsing-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -203,6 +205,21 @@
             <version>1.16.18</version>
             <scope>provided</scope><!--TODO check-->
         </dependency>
+
+        <!--JUnit-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter-engine.version}</version>
+            <!--<scope>test</scope>-->
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <version>${junit-platform-runner.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
     <!--////////////////////////////////////////////////////////////////////////////////-->
     <profiles>
