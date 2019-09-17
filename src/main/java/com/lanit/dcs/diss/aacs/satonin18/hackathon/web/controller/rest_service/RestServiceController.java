@@ -19,7 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+
+//TODO ПОМЕНЯТЬ ЭТОТ ГОВНОКОД НА НОРМАЛБНЫЙ
 
 //@SuppressWarnings("ALL")
 @RestController //todo check binding with other anotations (=analog /*@ResponseBody*/, but not @RequestBody)
@@ -41,18 +44,16 @@ public class RestServiceController {
 			if (bindingResult.hasErrors()) throw new Exception();
 			if ( personService.existsById(dto.getId()) ) throw new Exception();
 			//todo replace
-			SimpleDateFormat format = new SimpleDateFormat(PropertiesApp.DATA_FORMAT_BIRTHDATE);
-			java.util.Date utilData = format.parse(dto.getBirthdate()); // throw new Exception();
-			java.sql.Date sqlDataBirthdate = new java.sql.Date(utilData.getTime());
-			LocalDate localdataBirthday = sqlDataBirthdate.toLocalDate();
-			long days = LocalDate.from(localdataBirthday).until(LocalDate.now(), ChronoUnit.DAYS);
+			DateTimeFormatter formatters = DateTimeFormatter.ofPattern(PropertiesApp.DATA_FORMAT_BIRTHDATE);
+			LocalDate birthday = LocalDate.parse(dto.getBirthdate(), formatters);
+
+			long days = birthday.until(LocalDate.now(), ChronoUnit.DAYS);
 			if(days < 0) throw new Exception();
 			//------------------------------------
 			Person person = new Person();
 			person.setId(dto.getId());
 			person.setName(dto.getName());
-//			person.setBirthdate(sqlDataBirthdate);
-			person.setBirthdate(localdataBirthday);
+			person.setBirthdate(birthday);
 
 			personService.save(person);
 
@@ -74,7 +75,6 @@ public class RestServiceController {
 			if(dto.getHorsepower() <= 0) throw new Exception();
 			Person ownerPerson = personService.findById(dto.getOwnerId()).orElseThrow( () -> new Exception() );
 			LocalDate birthday = ownerPerson.getBirthdate();//.toLocalDate();
-//			long age = LocalDate.from(birthday).until(LocalDate.now(), ChronoUnit.YEARS);
 			long age = birthday.until(LocalDate.now(), ChronoUnit.YEARS);
 			if(age < 18) throw new Exception();
 

@@ -34,7 +34,7 @@ public class PersonDto4save {
 
     @NotNull
 //    @NotBlank
-    @Size(min = 1, max = 100)
+    @Size(min = 0, max = 100)
     String name;
 
 //    @NotNull

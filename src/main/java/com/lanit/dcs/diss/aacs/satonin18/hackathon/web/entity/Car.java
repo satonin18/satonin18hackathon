@@ -38,7 +38,7 @@ horsepower > 0
 //@JsonIgnoreProperties({"person", "vendor", "model"}) //todo in "model" = vendor-model
 public class Car {
 
-
+//todo set PRIVSTE FIELD
 
     @Id
     @Column(name = "id", nullable = false)
