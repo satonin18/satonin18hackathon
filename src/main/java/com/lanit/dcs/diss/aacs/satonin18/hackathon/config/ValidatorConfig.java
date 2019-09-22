@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -17,12 +18,7 @@ import javax.validation.ValidatorFactory;
 })
 public class ValidatorConfig {
 
-    //	@Bean
-//	public LocalValidatorFactoryBean validator() { return new LocalValidatorFactoryBean(); }
     @Bean
-    public Validator validator() {
-        ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
-        return vf.getValidator();
-    }
+	public LocalValidatorFactoryBean validator() { return new LocalValidatorFactoryBean(); }
 
 }

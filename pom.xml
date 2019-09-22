@@ -35,7 +35,6 @@
         <spring.version>5.1.4.RELEASE</spring.version>
         <jstl.version>1.2</jstl.version>
 
-        <!--<hibernate.entitymanager>4.3.11.Final</hibernate.entitymanager>-->
         <hibernate.entitymanager>5.2.11.Final</hibernate.entitymanager>
         <hibernate.validator>6.0.12.Final</hibernate.validator>
         <hibernate-validator-annotation-processor>6.0.2.Final</hibernate-validator-annotation-processor>
@@ -51,7 +50,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servletapi.version}</version>
-            <!--<scope>provided</scope>-->
         </dependency>
 
         <!-- Spring -->
@@ -130,26 +128,25 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- org.jboss.logging - эта библеотека добавлена на сервер глассФиш -->
-        <!-- если запускать через томкат по пригодиться эта зависимость -->
         <dependency>
             <groupId>org.jboss.logging</groupId>
             <artifactId>jboss-logging</artifactId>
-            <version>3.3.1.Final</version><!--<version>3.3.0.Final</version>-->
-            <!--default = необязательная зависимость-->
-            <!--<optional>false</optional>-->
-            <!--<optional>true</optional>-->
+            <version>3.3.1.Final</version>
         </dependency>
 
-        <!--javax-->
-        <!--javax.persistence.* IN HIBERNATE-->
+        <!--javax.servlet jstl-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
         </dependency>
+        <!--validation-->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation-api.version}</version>
+        </dependency>
         <!-- hibernate-validator -->
-        <!-- true Valid param Controller-->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
@@ -159,35 +156,21 @@
                     <groupId>org.jboss.logging</groupId>
                     <artifactId>jboss-logging</artifactId>
                 </exclusion>
-
-                <!--<exclusion>-->
-                <!--<groupId>javax.validation</groupId>-->
-                <!--<artifactId>validation-api</artifactId>-->
-                <!--</exclusion>-->
             </exclusions>
         </dependency>
         <!-- hibernate-validator-annotation-processor -->
         <dependency>
-            <!--<groupId>org.hibernate</groupId>-->
-            <groupId>org.hibernate.validator</groupId>
+            <groupId>org.hibernate.validator</groupId><!--OLDER=<groupId>org.hibernate</groupId>-->
             <artifactId>hibernate-validator-annotation-processor</artifactId>
             <version>${hibernate-validator-annotation-processor}</version>
         </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation-api.version}</version>
-            <!--<version>1.1.0.Final</version>-->
-        </dependency>
-
          <!--MYSQL Dependency-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.11</version>
         </dependency>
-
-        <!--for GlassFish and JSON-Parsing-->
+        <!--JSON-Parsing-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -198,21 +181,19 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>2.10.0.pr1</version>
         </dependency>
-
-        <!--for lombok-->
+        <!--lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.16.18</version>
             <scope>provided</scope><!--TODO check-->
         </dependency>
-
         <!--JUnit-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter-engine.version}</version>
-            <!--<scope>test</scope>-->
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
@@ -220,7 +201,7 @@
             <version>${junit-platform-runner.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--http://modelmapper.org/getting-started/-->
+        <!--mapper-->
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>

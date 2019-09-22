@@ -24,11 +24,6 @@ import javax.validation.ValidatorFactory;
 })
 @EnableWebMvc
 public class SpringMvcConfig implements WebMvcConfigurer {
- 
-//	@Override
-//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
-//	}
 	
 	@Bean
 	public InternalResourceViewResolver viewResolver() {

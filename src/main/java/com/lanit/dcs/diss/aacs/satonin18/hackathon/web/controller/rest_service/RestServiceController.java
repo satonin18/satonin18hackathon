@@ -29,20 +29,16 @@ public class RestServiceController {
 	private final PersonService personService;
 	private final CarService carService;
 	private final StatisticsService statisticsService;
-//	private final Validator validatorDto;
 
 	@Autowired
 	public RestServiceController(
 			final PersonService personService,
 			final CarService carService,
 			final StatisticsService statisticsService
-//			,
-//			final Validator validator
 	) {
 		this.personService = personService;
 		this.carService = carService;
 		this.statisticsService = statisticsService;
-//		this.validatorDto = validator;
 	}
 
 	@RequestMapping(value = "/person", method = RequestMethod.POST)
@@ -78,12 +74,14 @@ public class RestServiceController {
 			Car car = new Car();
 			car.setId(dto.getId());
 			car.setHorsepower(dto.getHorsepower());
+
 			String[] fullName = dto.getModel().split("-",2);
 			car.setVendor(fullName[0]);
 			car.setModel(fullName[1]);
+			
 			Person ownerPerson = personService.findById(dto.getOwnerId()).orElseThrow( () -> new Exception() );
 			car.setPerson(ownerPerson);
-			// VALIDATE ENTITY -----------------------------------------------------------------
+			// -----------------------------------------------------------------
 			carService.saveCar(car); // -> validation entity
 
 			return new ResponseEntity<>(HttpStatus.OK);

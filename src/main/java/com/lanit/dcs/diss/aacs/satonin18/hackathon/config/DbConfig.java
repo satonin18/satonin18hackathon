@@ -43,7 +43,7 @@ import static org.hibernate.cfg.AvailableSettings.*;
 public class DbConfig {
 
 	@Autowired
-	private Environment env;//	private ApplicationContext context;
+	private Environment env;
 
 	@PostConstruct
 	private void p() {
@@ -56,7 +56,6 @@ public class DbConfig {
 	}
 
 	@Bean //no DataSource
-//	public DriverManagerDataSource dataSource() throws NamingException {
 	public DataSource dataSource() throws NamingException {
 		System.out.println("ddddddddddddddddddddddddddddddddddddd");
 
@@ -67,22 +66,10 @@ public class DbConfig {
 		dataSource.setUsername(env.getProperty("jdbc.user"));
 		dataSource.setPassword(env.getProperty("jdbc.password"));
 		return dataSource;
-
-//		for GlasFish by JNDI
-//		Context context = new InitialContext();
-//		DataSource ds = (DataSource) context.lookup("jdbc/dataSource");
-//		System.err.println("DATASOURCE: " + ds);
-//		return ds;
 	}
 
 	private Properties hibernateProperties() {
 		Properties props = new Properties();
-
-//		// Setting JDBC properties
-//		props.put(DRIVER, env.getProperty("jdbc.driver"));
-//		props.put(URL, env.getProperty("jdbc.url"));
-//		props.put(USER, env.getProperty("jdbc.user"));
-//		props.put(PASS, env.getProperty("jdbc.password"));
 
 		// Setting Hibernate properties
 		props.put(DIALECT, env.getProperty("hibernate.dialect"));
@@ -90,39 +77,10 @@ public class DbConfig {
 		props.put(FORMAT_SQL, env.getProperty("hibernate.format_sql"));
 		props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
 
-		// Setting C3P0 properties
-//		props.put(C3P0_MIN_SIZE,
-//				env.getProperty("hibernate.c3p0.min_size"));
-//		props.put(C3P0_MAX_SIZE,
-//				env.getProperty("hibernate.c3p0.max_size"));
-//		props.put(C3P0_ACQUIRE_INCREMENT,
-//				env.getProperty("hibernate.c3p0.acquire_increment"));
-//		props.put(C3P0_TIMEOUT,
-//				env.getProperty("hibernate.c3p0.timeout"));
-//		props.put(C3P0_MAX_STATEMENTS,
-//				env.getProperty("hibernate.c3p0.max_statements"));
-
 		return props;
 	}
 
-//	@Bean
-//	public LocalSessionFactoryBean getSessionFactory() throws IOException {
-//		System.out.println("ssssssssssssssssssssssssssssssssssssssssssss");
-//
-//		LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-////		sessionFactoryBean.setConfigLocation(context.getResource("classpath:hibernate.cfg.xml"));
-//
-//		sessionFactoryBean.setDataSource(dataSource());
-//		sessionFactoryBean.setHibernateProperties(hibernateProperties());
-//
-//		sessionFactoryBean.setPackagesToScan("com.lanit.satonin18.app.entity");
-//		sessionFactoryBean.afterPropertiesSet();//
-//
-//		return sessionFactoryBean; //.getObject();
-//	}
-
 	@Bean
-//	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws NamingException {
 	public EntityManagerFactory entityManagerFactory() throws NamingException {
 		LocalContainerEntityManagerFactoryBean em_fb = new LocalContainerEntityManagerFactoryBean();
 
@@ -134,17 +92,12 @@ public class DbConfig {
 		em_fb.afterPropertiesSet();//
 
 		return em_fb.getNativeEntityManagerFactory();
-//		return em_fb;
 	}
 
 	//for working @Transactional
 	@Bean
 	public PlatformTransactionManager transactionManager() throws IOException, NamingException {
 		System.out.println("mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
-//		return new HibernateTransactionManager(getSessionFactory().getObject());
-//		return new JpaTransactionManager(getSessionFactory().getObject());
-
 		return new JpaTransactionManager(entityManagerFactory());
-//		return new JpaTransactionManager(entityManagerFactory().getObject());
 	}
 }

@@ -14,59 +14,33 @@ public class ServletConfig
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		//create the root Spring application context
-
 		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
 		rootContext.register(
-				DbConfig.class
-				, ValidatorConfig.class
-//				WebSecurityConfig.class
+				DbConfig.class, ValidatorConfig.class
 		);
-
-		//Where CentralServerConfigurationEntryPoint.class must only scan components that must work in the server side
-		// (@Service, @Repository, @Configuration for Transaction, Hibernate, DataSource etc)
-
 		servletContext.addListener(new ContextLoaderListener(rootContext));
-
-		//Create the dispatcher servlet's Spring application context
 
 		AnnotationConfigWebApplicationContext servletAppContext = new AnnotationConfigWebApplicationContext();
 		servletAppContext.register(SpringMvcConfig.class);
 
-		//Where CentralWebConfigurationEntryPoint must only scan components that must work in the client/web side
-		// (@Controller, @Configuration for Formatters, Tiles, Converters etc)
-
 		DispatcherServlet dispatcherServlet = new DispatcherServlet(servletAppContext);
-		// throw NoHandlerFoundException to controller ExceptionHandler.class. Used for <error-page> analogue
 		dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
-
-		//register and map the dispatcher servlet
-		//note Dispatcher servlet with constructor arguments
 
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/");
 
-		FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encoding-filterForm", new CharacterEncodingFilter());
+		FilterRegistration.Dynamic encodingFilter = servletContext.addFilter(
+				"encoding-filterForm", new CharacterEncodingFilter());
 		encodingFilter.setInitParameter("encoding", "UTF-8");
 		encodingFilter.setInitParameter("forceEncoding", "true");
 		encodingFilter.addMappingForUrlPatterns(null, true, "/*");
 	}
 
-//   @Override
-//   protected FilterForm[] getServletFilters() {
-//      CharacterEncodingFilter cef = new CharacterEncodingFilter();
-//      cef.setEncoding("UTF-8");
-//      cef.setForceEncoding(true);
-//      return new FilterForm[]{new HiddenHttpMethodFilter(), cef};
-//   }
-
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class[] {
-				DbConfig.class
-				, ValidatorConfig.class
-//				WebSecurityConfig.class
+				DbConfig.class, ValidatorConfig.class
 		};
 	}
 
