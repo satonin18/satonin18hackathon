@@ -11,11 +11,15 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import javax.annotation.PostConstruct;
 import javax.naming.NamingException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -37,6 +41,17 @@ import static org.hibernate.cfg.AvailableSettings.*;
 		repositoryImplementationPostfix = "Impl")
 @PropertySource("classpath:db.properties")
 public class DbConfig {
+
+//	@Bean
+//	public LocalValidatorFactoryBean validator() { return new LocalValidatorFactoryBean(); }
+	@Bean
+	public Validator validator() {
+		ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
+		return vf.getValidator();
+	}
+
+
+
 
 	@Autowired
 	private Environment env;//	private ApplicationContext context;

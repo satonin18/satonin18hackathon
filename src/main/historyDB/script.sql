@@ -15,23 +15,6 @@ CREATE SCHEMA IF NOT EXISTS `hackathon` DEFAULT CHARACTER SET utf8 ;
 USE `hackathon` ;
 
 -- -----------------------------------------------------
--- Table `hackathon`.`cars`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `hackathon`.`cars` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT,
-  `vendor` VARCHAR(50) NOT NULL,
-  `model` VARCHAR(50) NOT NULL,
-  `horsepower` INT UNSIGNED NOT NULL,
-  `ownerId` BIGINT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-CREATE INDEX `vendor_ind` ON `hackathon`.`cars` (`vendor` ASC) VISIBLE;
-
-CREATE INDEX `ownerId_ind` ON `hackathon`.`cars` (`ownerId` ASC) VISIBLE;
-
-
--- -----------------------------------------------------
 -- Table `hackathon`.`persons`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `hackathon`.`persons` (
@@ -40,6 +23,28 @@ CREATE TABLE IF NOT EXISTS `hackathon`.`persons` (
   `birthdate` DATE NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `hackathon`.`cars`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `hackathon`.`cars` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `vendor` VARCHAR(50) NOT NULL,
+  `model` VARCHAR(50) NOT NULL,
+  `horsepower` INT UNSIGNED NOT NULL,
+  `ownerId` BIGINT NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `ownerId`
+    FOREIGN KEY (`ownerId`)
+    REFERENCES `hackathon`.`persons` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+CREATE INDEX `vendor_ind` ON `hackathon`.`cars` (`vendor` ASC) VISIBLE;
+
+CREATE INDEX `ownerId_ind` ON `hackathon`.`cars` (`ownerId` ASC) VISIBLE;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
