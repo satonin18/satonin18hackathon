@@ -1,4 +1,4 @@
-package com.lanit.dcs.diss.aacs.satonin18.hackathon.config.spring_mvc;
+package com.lanit.dcs.diss.aacs.satonin18.hackathon.config;
  
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,7 +23,7 @@ import javax.validation.ValidatorFactory;
 		)
 })
 @EnableWebMvc
-public class WebMvcConfig implements WebMvcConfigurer {
+public class SpringMvcConfig implements WebMvcConfigurer {
  
 //	@Override
 //	public void addResourceHandlers(ResourceHandlerRegistry registry) {

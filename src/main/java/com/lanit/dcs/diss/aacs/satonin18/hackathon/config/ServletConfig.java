@@ -1,7 +1,6 @@
-package com.lanit.dcs.diss.aacs.satonin18.hackathon.config.servlet;
+package com.lanit.dcs.diss.aacs.satonin18.hackathon.config;
 
-import com.lanit.dcs.diss.aacs.satonin18.hackathon.config.db.DbConfig;
-import com.lanit.dcs.diss.aacs.satonin18.hackathon.config.spring_mvc.WebMvcConfig;
+import com.lanit.dcs.diss.aacs.satonin18.hackathon.config.DbConfig;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -10,7 +9,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 
 import javax.servlet.*;
 
-public class DispatcherServletInit
+public class ServletConfig
 		extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
@@ -20,7 +19,7 @@ public class DispatcherServletInit
 		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
 		rootContext.register(
 				DbConfig.class
-//				,
+				, ValidatorConfig.class
 //				WebSecurityConfig.class
 		);
 
@@ -32,7 +31,7 @@ public class DispatcherServletInit
 		//Create the dispatcher servlet's Spring application context
 
 		AnnotationConfigWebApplicationContext servletAppContext = new AnnotationConfigWebApplicationContext();
-		servletAppContext.register(WebMvcConfig.class);
+		servletAppContext.register(SpringMvcConfig.class);
 
 		//Where CentralWebConfigurationEntryPoint must only scan components that must work in the client/web side
 		// (@Controller, @Configuration for Formatters, Tiles, Converters etc)
@@ -66,7 +65,7 @@ public class DispatcherServletInit
 	protected Class<?>[] getRootConfigClasses() {
 		return new Class[] {
 				DbConfig.class
-//				,
+				, ValidatorConfig.class
 //				WebSecurityConfig.class
 		};
 	}

@@ -1,4 +1,4 @@
-package com.lanit.dcs.diss.aacs.satonin18.hackathon.config.db;
+package com.lanit.dcs.diss.aacs.satonin18.hackathon.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -41,17 +41,6 @@ import static org.hibernate.cfg.AvailableSettings.*;
 		repositoryImplementationPostfix = "Impl")
 @PropertySource("classpath:db.properties")
 public class DbConfig {
-
-//	@Bean
-//	public LocalValidatorFactoryBean validator() { return new LocalValidatorFactoryBean(); }
-	@Bean
-	public Validator validator() {
-		ValidatorFactory vf = Validation.buildDefaultValidatorFactory();
-		return vf.getValidator();
-	}
-
-
-
 
 	@Autowired
 	private Environment env;//	private ApplicationContext context;
