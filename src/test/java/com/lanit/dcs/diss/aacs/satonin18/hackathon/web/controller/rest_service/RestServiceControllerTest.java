@@ -83,6 +83,20 @@ public class RestServiceControllerTest {
     }
 
     @Test
+    public void BAD_clear() throws Exception {
+        //ВНЕШНИЕ ТЕСТЫ (при запущенном сервере, также как soapUi)
+//        final String API_ROOT = "http://10.32.101.63:8080/hackathon";
+//        Response r = RestAssured.get(API_ROOT + "/clear");
+//        assertEquals(200,r.getStatusCode());
+
+        System.out.println(200);
+
+        this.mockMvc.perform(get("/BAD_clear")).andExpect(status().isNotFound());
+
+        System.out.println("BADDDDDDDDDD");
+    }
+
+    @Test
     public void save_person() {
     }
 
