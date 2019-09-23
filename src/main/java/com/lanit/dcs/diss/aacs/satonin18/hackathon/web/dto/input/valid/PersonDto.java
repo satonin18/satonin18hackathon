@@ -24,13 +24,13 @@ public class PersonDto {
 
 
     //такой id не дожен лежать в бд //проверка в контроллере/сервисе
-    @NotNull
+//    @NotNull
     Long id;
 
 
 
-    @NotNull
-    @Size(max = 100)
+//    @NotNull
+//    @Size(max = 100)
     String name;
 
 
@@ -38,8 +38,8 @@ public class PersonDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = PropertiesApp.DATA_FORMAT_BIRTHDATE)
     @JsonDeserialize(using = LocalDateDeserializer.class)
 
-    @NotNull //can be remove
-    @Past
+//    @NotNull //can be remove
+//    @Past
 
     LocalDate birthdate;
 

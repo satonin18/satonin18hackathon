@@ -16,18 +16,18 @@ public class CarDto {
 //    interface New {}
 
     //такой id не дожен лежать в бд //проверка в контроллере/сервисе
-    @NotNull
+//    @NotNull
     Long id;
 
     @NotNull
     @Pattern(regexp = "^[^-]{1,50}-.{1,50}$") //"^"=start  "$"=end  "[^-]"=любой_символ_кромеТИРЕ  "."=любой_символ  "+"=OneOrMore "{1,50}"-min=1,max=50
     String model;
 
-    @NotNull
-    @Positive
+//    @NotNull
+//    @Positive
     Integer horsepower;
 
     //Person должен быть в бд, и быть старше 18 лет //проверка на уровне валидации Entity
-    @NotNull
+//    @NotNull
     Long ownerId;
 }
