@@ -4,7 +4,9 @@ import ipr.web.dto.input.valid.CarDto;
 import ipr.web.dto.input.valid.PersonDto;
 import ipr.web.dto.output.StatisticsDto;
 import ipr.web.entity.Car;
+import ipr.web.entity.Ent;
 import ipr.web.entity.Person;
+import ipr.web.repository.EntRepository;
 import ipr.web.service.CarService;
 import ipr.web.service.PersonService;
 import ipr.web.service.StatisticsService;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityManager;
 import javax.validation.Valid;
 
 @RestController //todo check binding with other anotations (=analog /*@ResponseBody*/, but not @RequestBody)
@@ -28,16 +31,18 @@ public class RestServiceController {
 	private final PersonService personService;
 	private final CarService carService;
 	private final StatisticsService statisticsService;
-
+	private final EntRepository entRepository;
 	@Autowired
 	public RestServiceController(
 			final PersonService personService,
 			final CarService carService,
-			final StatisticsService statisticsService
+			final StatisticsService statisticsService,
+			final EntRepository entRepository
 	) {
 		this.personService = personService;
 		this.carService = carService;
 		this.statisticsService = statisticsService;
+		this.entRepository = entRepository;
 	}
 
 	@RequestMapping(value = "/person", method = RequestMethod.POST)
@@ -114,6 +119,9 @@ public class RestServiceController {
 	@RequestMapping(value = "/statistics", method = RequestMethod.GET)
 	public ResponseEntity<StatisticsDto> statistics() {
 		try {
+			Ent ent = new Ent();
+			ent.setId(1L);
+			entRepository.save(ent);
 			StatisticsDto statisticsDto = statisticsService.getStatisticsDto();
 
 			return new ResponseEntity<StatisticsDto>(
